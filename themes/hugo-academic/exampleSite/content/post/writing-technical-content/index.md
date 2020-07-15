@@ -38,7 +38,7 @@ data.head()
 
 Academic supports a Markdown extension for $\LaTeX$ math. You can enable this feature by toggling the `math` option in your `config/_default/params.toml` file.
 
-To render *inline* or *block* math, wrap your LaTeX math with `$$...$$`.
+To render *inline* or *block* math, wrap your LaTeX math with `$...$` or `$$...$$`, respectively.
 
 Example **math block**:
 
@@ -53,18 +53,18 @@ renders as
 
 $$\gamma_{n} = \frac{ \left | \left (\mathbf x_{n} - \mathbf x_{n-1} \right )^T \left [\nabla F (\mathbf x_{n}) - \nabla F (\mathbf x_{n-1}) \right ] \right |}{\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2}$$
 
-Example **inline math** `$$\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2$$` renders as $$\left \|\nabla F(\mathbf{x}_{n}) - \nabla F(\mathbf{x}_{n-1}) \right \|^2$$ .
+Example **inline math** `$\nabla F(\mathbf{x}_{n})$` renders as $\nabla F(\mathbf{x}_{n})$.
 
-Example **multi-line math** using the `\\` math linebreak:
+Example **multi-line math** using the `\\\\` math linebreak:
 
 ```tex
-$$f(k;p_0^*) = \begin{cases} p_0^* & \text{if }k=1, \\
+$$f(k;p_0^*) = \begin{cases} p_0^* & \text{if }k=1, \\\\
 1-p_0^* & \text {if }k=0.\end{cases}$$
 ```
 
 renders as
 
-$$f(k;p_0^*) = \begin{cases} p_0^* & \text{if }k=1, \\
+$$f(k;p_0^*) = \begin{cases} p_0^* & \text{if }k=1, \\\\
 1-p_0^* & \text {if }k=0.\end{cases}$$
 
 ### Diagrams
@@ -260,5 +260,37 @@ renders as
 {{% alert note %}}
 A Markdown aside is useful for displaying notices, hints, or definitions to your readers.
 {{% /alert %}}
+
+### Spoilers
+
+Add a spoiler to a page to reveal text, such as an answer to a question, after a button is clicked.
+
+```markdown
+{{</* spoiler text="Click to view the spoiler" */>}}
+You found me!
+{{</* /spoiler */>}}
+```
+
+renders as
+
+{{< spoiler text="Click to view the spoiler" >}} You found me! {{< /spoiler >}}
+
+### Icons
+
+Academic enables you to use a wide range of [icons from _Font Awesome_ and _Academicons_](https://sourcethemes.com/academic/docs/page-builder/#icons) in addition to [emojis](https://sourcethemes.com/academic/docs/writing-markdown-latex/#emojis).
+
+Here are some examples using the `icon` shortcode to render icons:
+
+```markdown
+{{</* icon name="terminal" pack="fas" */>}} Terminal  
+{{</* icon name="python" pack="fab" */>}} Python  
+{{</* icon name="r-project" pack="fab" */>}} R
+```
+
+renders as
+
+{{< icon name="terminal" pack="fas" >}} Terminal  
+{{< icon name="python" pack="fab" >}} Python  
+{{< icon name="r-project" pack="fab" >}} R
 
 ### Did you find this page helpful? Consider sharing it 🙌
