@@ -1,0 +1,63 @@
+---
+title: "Standard Evaluation"
+author: "Gareth Lawson"
+date: 2020-07-14 21:00:00 -0500 CDT
+output: html_document
+---
+
+
+
+<div id="tidy-evaluation" class="section level2">
+<h2>Tidy Evaluation</h2>
+<div id="i-have-a-string-that-i-want-to-use-as-a-filter" class="section level3">
+<h3>I have a string that I want to use as a filter</h3>
+<pre class="r"><code>(filt_fld = &quot;cyl&quot;)</code></pre>
+<pre><code>## [1] &quot;cyl&quot;</code></pre>
+<pre class="r"><code>mtcars %&gt;%
+  filter(!!filt_fld == 6)</code></pre>
+<pre><code>##  [1] mpg  cyl  disp hp   drat wt   qsec vs   am   gear carb
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+</div>
+<div id="it-needs-to-be-converted-to-a-symbol" class="section level3">
+<h3>It needs to be converted to a symbol</h3>
+<pre class="r"><code>(filt_fld = &quot;cyl&quot;)</code></pre>
+<pre><code>## [1] &quot;cyl&quot;</code></pre>
+<pre class="r"><code>(filt_fld_as_sym = sym(filt_fld))</code></pre>
+<pre><code>## cyl</code></pre>
+<pre class="r"><code>mtcars %&gt;%
+  filter(!!filt_fld_as_sym == 6)</code></pre>
+<pre><code>##    mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+## 1 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
+## 2 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4
+## 3 21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1
+## 4 18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1
+## 5 19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+## 6 17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+## 7 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</code></pre>
+</div>
+<div id="multiple-strings-to-symbols" class="section level3">
+<h3>Multiple strings to symbols</h3>
+<pre class="r"><code>ord_flds = c(&quot;carb&quot;, &quot;hp&quot;)
+
+ord_flds_as_sym = syms(ord_flds)
+
+mtcars %&gt;%
+  arrange(!!!ord_flds_as_sym) %&gt;%
+  head(5)</code></pre>
+<pre><code>##    mpg cyl  disp hp drat    wt  qsec vs am gear carb
+## 1 33.9   4  71.1 65 4.22 1.835 19.90  1  1    4    1
+## 2 32.4   4  78.7 66 4.08 2.200 19.47  1  1    4    1
+## 3 27.3   4  79.0 66 4.08 1.935 18.90  1  1    4    1
+## 4 22.8   4 108.0 93 3.85 2.320 18.61  1  1    4    1
+## 5 21.5   4 120.1 97 3.70 2.465 20.01  1  0    3    1</code></pre>
+</div>
+</div>
+<div id="including-plots" class="section level2">
+<h2>Including Plots</h2>
+<p>You can also embed plots, for example:</p>
+<p><img src="/post/standard-eval/standard_evaluation_files/figure-html/pressure-1.png" width="672" /></p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p><a href="https://tidyeval.tidyverse.org/" class="uri">https://tidyeval.tidyverse.org/</a></p>
+</div>

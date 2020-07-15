@@ -1,7 +1,7 @@
 ---
 title: "Standard Evaluation"
 author: "Gareth Lawson"
-date: "14 February 2020"
+date: 2020-07-14 21:00:00 -0500 CDT
 output: html_document
 ---
 
