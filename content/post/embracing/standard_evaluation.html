@@ -1,0 +1,39 @@
+---
+title: "Embracing in the Tidyverse"
+author: "Gareth Lawson"
+date: 2020-08-04 21:00:00 -0500 CDT
+output: html_document
+runtime: shiny
+draft: true
+
+---
+
+
+
+<p>Tidy Eval is not my strong point.</p>
+<p>Is it sym? or enquo? or bang bang?</p>
+<p>Maybe we just need a nice big embrace.</p>
+<!--more-->
+<div id="section-summary" class="section level2">
+<h2>Summary</h2>
+<p>Tidy Eval confuses me.</p>
+<p>I often have trouble referring to columns that are stored as strings. Usually after some experimenting with <strong>!!</strong>, <strong>sym</strong> and/or <strong>enquo</strong> I find what I’m looking for.</p>
+<p>Recently I watched a <a href="https://www.youtube.com/watch?v=vYwXMnC03I4">Hadley Wickham talk</a> (from 18:15) that introduced me to embracing. Embracing uses double curly-brackets <strong>{{ }}</strong> to refer to a column.</p>
+<div id="section-i-have-a-string-that-i-want-to-use-as-a-filter" class="section level3">
+<h3>I have a string that I want to use as a filter</h3>
+<pre><code>## # A tibble: 1 x 2
+##   `&quot;cyl&quot;`   mpg
+##   &lt;chr&gt;   &lt;dbl&gt;
+## 1 cyl      20.1</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##     cyl   mpg
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1     4  26.7
+## 2     6  19.7
+## 3     8  15.1</code></pre>
+</div>
+</div>
+<div id="section-references" class="section level1">
+<h1>References</h1>
+<p><a href="https://tidyeval.tidyverse.org/" class="uri">https://tidyeval.tidyverse.org/</a></p>
+</div>

@@ -53,4 +53,4 @@ hero_media = "gl-comic-sml.png"
 
 **Analyst, turned Modeller, turned Business Analyst, turned Developer**
 
-This blog details some of tips and tricks that I'm learning along my path to being a developer
+This blog details some of tips and tricks that I find useful. Some are in R, some in SQL, some in good ways to cook ribs...

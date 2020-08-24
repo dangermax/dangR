@@ -1,0 +1,62 @@
+---
+title: "Embracing in the Tidyverse"
+author: "Gareth Lawson"
+date: 2020-08-04 21:00:00 -0500 CDT
+output: html_document
+runtime: shiny
+draft: true
+
+---
+
+```{r setup, include=FALSE}
+# knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(shiny)
+
+```
+Tidy Eval is not my strong point. 
+
+Is it sym? or enquo? or bang bang?
+
+Maybe we just need a nice big embrace.
+
+<!--more-->
+
+## Summary
+
+Tidy Eval confuses me. 
+
+I often have trouble referring to columns that are stored as strings. Usually after some experimenting with **!!**, **sym** and/or **enquo** I find what I'm looking for.
+
+Recently I watched a [Hadley Wickham talk](https://www.youtube.com/watch?v=vYwXMnC03I4)  (from 18:15) that introduced me to embracing. Embracing uses double curly-brackets **{{ }}** to refer to a column.
+
+
+
+### I have a string that I want to use as a filter
+
+```{r, echo = FALSE}
+
+col_1 = "cyl"
+
+mtcars %>%
+  as_tibble() %>%
+  group_by( {{ col_1 }} ) %>%
+  summarise(mpg = mean(mpg))
+
+
+
+sum_by = function(col_1) {
+  mtcars %>%
+    as_tibble() %>%
+    group_by({{col_1}}) %>%
+    summarise(mpg = mean(mpg))
+}
+
+sum_by(cyl)
+
+  
+
+```
+
+# References
+<https://tidyeval.tidyverse.org/>
