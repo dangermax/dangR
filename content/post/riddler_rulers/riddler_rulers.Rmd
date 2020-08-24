@@ -1,7 +1,7 @@
 ---
 title: "Riddler - Rulers"
 author: "Gareth Lawson"
-date: "20 August 2020"
+date: "25 August 2020"
 output: html_document
 ---
 
@@ -12,6 +12,8 @@ library(ggridges)
 ```
 
 ## Intro
+
+This riddle comes from the Riddler at fivethirtyeight:
 <https://fivethirtyeight.com/features/are-you-hip-enough-to-be-square/>
 
 The Riddler Manufacturing Company makes all sorts of mathematical tools: compasses, protractors, slide rules - you name it!
@@ -20,7 +22,9 @@ Recently, there was an issue with the production of foot-long rulers. It seems t
 
 On average, how long are the pieces that contain the 6-inch mark?
 
-## Cutting up one million rulers
+# Simulate cutting up one million rulers
+
+Cutting up the rulers
 
 ```{r cars}
 rulers = 100000
@@ -38,64 +42,77 @@ cuts = 3
 
 ```
 
-## Display the lengths of all segments (4 per ruler)
+Display the lengths of all segments (4 per ruler)
 
 ```{r}
   cut_df %>%
     ggplot(aes(length * 12)) +
     geom_histogram(
         binwidth = 0.5, 
-        boundary = 1) +
+        boundary = 1, 
+        fill = 'darkgreen') +
     labs(title = "Lengths of all ruler segments",
          x = "Length (inches)",
-         y = "Count")
+         y = "Count") +
+  theme(text = element_text(colour = 'white'),
+        axis.text = element_text(colour = 'white'),
+        panel.background = element_rect(fill = "transparent",colour = NA))
+
 
 ```
 
-# Find the lengths of the pieces of ruler that have the middle of the original ruler
+Display the lengths of the pieces of ruler that have the six inch mark
 
 ```{r}
-mids = cut_df %>%
+  # segs with middle
+  mids = cut_df %>%
     rowwise() %>%
     filter(cut > 0.5) %>%
     group_by(r_id) %>%  
     slice(1) %>%
-    ungroup()
-```
-
-# Display the lengths of the pieces of ruler that have the middle of the original ruler
-
-```{r}
-  # segs with middle
-  mids %>%
     ggplot(aes(x = length * 12)) +
-    geom_histogram(binwidth = 0.5, 
-        boundary = 1) +
+    geom_histogram(
+      binwidth = 0.5, 
+      boundary = 1, 
+      fill = 'darkgreen') +
     labs(title = "Lengths of ruler segments that contain the 6 inch mark",
          x = "Length (inches)",
-         y = "Count") 
+         y = "Count") +
+  theme(text = element_text(colour = 'white'),
+        axis.text = element_text(colour = 'white'),
+        panel.background = element_rect(fill = "transparent",colour = NA))
+
 
 ```
 
-# Lengths of the segments that contain the various 'inch' marks
-
-This chart shows the length of the ruler that have the 
+Display the lengths of the segments that contain the various 'inch' marks
 
 ```{r}
-  cut_df %>%
-    rowwise() %>%
-    mutate(x = (r_id %% 13) / 12) %>%
-    filter(cut >= x) %>%
-    group_by(r_id) %>%  
-    slice(1) %>%
-    ungroup() %>%
-    group_by(x) %>%
-    ggplot(aes(x = length * 12, y = x * 12, group = x * 12, fill = length)) + 
-    geom_density_ridges_gradient() +
-    scale_fill_viridis_c(name = "", option = "C") +
-    labs(title = "Lengths of ruler segments that contain the various inch marks",
-         x = "Length (inches)",
-         y = "Inch Mark") 
+
+
+cut_df  %>%
+  rowwise() %>%
+  head(10000) %>%
+  crossing(mk = 0:12) %>%
+  filter(cut >= mk/12) %>%
+  group_by(r_id, mk) %>%  
+  slice(1) %>%
+  ungroup() %>%
+  group_by(mk) %>%
+  ggplot(aes(x = length * 12, y = mk, group = mk, fill = stat(x))) + 
+  geom_density_ridges_gradient(from = 0, to = 12) +
+  scale_fill_viridis_c(name = "", option = "C") +
+  labs(title = "Lengths of ruler segments that contain the various inch marks",
+       subtitle = "Only showing first 10000",
+       x = "Length (inches)",
+       y = "Inch Mark") +
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0,12)) +
+  scale_x_continuous(expand = c(0, 0))+
+  theme(text = element_text(colour = 'white'),
+        axis.text = element_text(colour = 'white'),
+        panel.background = element_rect(fill = "transparent",colour = NA))
+
+
   
 ```
 

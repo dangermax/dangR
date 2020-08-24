@@ -1,7 +1,7 @@
 ---
 title: "Riddler - Rulers"
 author: "Gareth Lawson"
-date: "20 August 2020"
+date: "25 August 2020"
 output: html_document
 ---
 
@@ -9,13 +9,14 @@ output: html_document
 
 <div id="intro" class="section level2">
 <h2>Intro</h2>
-<p><a href="https://fivethirtyeight.com/features/are-you-hip-enough-to-be-square/" class="uri">https://fivethirtyeight.com/features/are-you-hip-enough-to-be-square/</a></p>
+<p>This riddle comes from the Riddler at fivethirtyeight: <a href="https://fivethirtyeight.com/features/are-you-hip-enough-to-be-square/" class="uri">https://fivethirtyeight.com/features/are-you-hip-enough-to-be-square/</a></p>
 <p>The Riddler Manufacturing Company makes all sorts of mathematical tools: compasses, protractors, slide rules - you name it!</p>
 <p>Recently, there was an issue with the production of foot-long rulers. It seems that each ruler was accidentally sliced at three random points along the ruler, resulting in four pieces. Looking on the bright side, that means there are now four times as many rulers - they just happen to have different lengths.</p>
 <p>On average, how long are the pieces that contain the 6-inch mark?</p>
 </div>
-<div id="cutting-up-one-million-rulers" class="section level2">
-<h2>Cutting up one million rulers</h2>
+<div id="simulate-cutting-up-one-million-rulers" class="section level1">
+<h1>Simulate cutting up one million rulers</h1>
+<p>Cutting up the rulers</p>
 <pre class="r"><code>rulers = 100000
 cuts = 3
 
@@ -28,59 +29,61 @@ cuts = 3
     group_by(r_id) %&gt;%  
     mutate(start = lag(cut,1,0),
            length = cut - start)</code></pre>
-</div>
-<div id="display-the-lengths-of-all-segments-4-per-ruler" class="section level2">
-<h2>Display the lengths of all segments (4 per ruler)</h2>
+<p>Display the lengths of all segments (4 per ruler)</p>
 <pre class="r"><code>  cut_df %&gt;%
     ggplot(aes(length * 12)) +
     geom_histogram(
         binwidth = 0.5, 
-        boundary = 1) +
+        boundary = 1, 
+        fill = &#39;darkgreen&#39;) +
     labs(title = &quot;Lengths of all ruler segments&quot;,
          x = &quot;Length (inches)&quot;,
-         y = &quot;Count&quot;)</code></pre>
+         y = &quot;Count&quot;) +
+  theme(text = element_text(colour = &#39;white&#39;),
+        axis.text = element_text(colour = &#39;white&#39;),
+        panel.background = element_rect(fill = &quot;transparent&quot;,colour = NA))</code></pre>
 <p><img src="/post/riddler_rulers/riddler_rulers_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-</div>
-<div id="find-the-lengths-of-the-pieces-of-ruler-that-have-the-middle-of-the-original-ruler" class="section level1">
-<h1>Find the lengths of the pieces of ruler that have the middle of the original ruler</h1>
-<pre class="r"><code>mids = cut_df %&gt;%
+<p>Display the lengths of the pieces of ruler that have the six inch mark</p>
+<pre class="r"><code>  # segs with middle
+  mids = cut_df %&gt;%
     rowwise() %&gt;%
     filter(cut &gt; 0.5) %&gt;%
     group_by(r_id) %&gt;%  
     slice(1) %&gt;%
-    ungroup()</code></pre>
-<pre><code>## Warning: Grouping rowwise data frame strips rowwise nature</code></pre>
-</div>
-<div id="display-the-lengths-of-the-pieces-of-ruler-that-have-the-middle-of-the-original-ruler" class="section level1">
-<h1>Display the lengths of the pieces of ruler that have the middle of the original ruler</h1>
-<pre class="r"><code>  # segs with middle
-  mids %&gt;%
     ggplot(aes(x = length * 12)) +
-    geom_histogram(binwidth = 0.5, 
-        boundary = 1) +
+    geom_histogram(
+      binwidth = 0.5, 
+      boundary = 1, 
+      fill = &#39;darkgreen&#39;) +
     labs(title = &quot;Lengths of ruler segments that contain the 6 inch mark&quot;,
          x = &quot;Length (inches)&quot;,
-         y = &quot;Count&quot;) </code></pre>
-<p><img src="/post/riddler_rulers/riddler_rulers_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-</div>
-<div id="lengths-of-the-segments-that-contain-the-various-inch-marks" class="section level1">
-<h1>Lengths of the segments that contain the various ‘inch’ marks</h1>
-<p>This chart shows the length of the ruler that have the</p>
-<pre class="r"><code>  cut_df %&gt;%
-    rowwise() %&gt;%
-    mutate(x = (r_id %% 13) / 12) %&gt;%
-    filter(cut &gt;= x) %&gt;%
-    group_by(r_id) %&gt;%  
-    slice(1) %&gt;%
-    ungroup() %&gt;%
-    group_by(x) %&gt;%
-    ggplot(aes(x = length * 12, y = x * 12, group = x * 12, fill = length)) + 
-    geom_density_ridges_gradient() +
-    scale_fill_viridis_c(name = &quot;&quot;, option = &quot;C&quot;) +
-    labs(title = &quot;Lengths of ruler segments that contain the various inch marks&quot;,
-         x = &quot;Length (inches)&quot;,
-         y = &quot;Inch Mark&quot;) </code></pre>
+         y = &quot;Count&quot;) +
+  theme(text = element_text(colour = &#39;white&#39;),
+        axis.text = element_text(colour = &#39;white&#39;),
+        panel.background = element_rect(fill = &quot;transparent&quot;,colour = NA))</code></pre>
 <pre><code>## Warning: Grouping rowwise data frame strips rowwise nature</code></pre>
-<pre><code>## Picking joint bandwidth of 0.342</code></pre>
-<p><img src="/post/riddler_rulers/riddler_rulers_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Display the lengths of the segments that contain the various ‘inch’ marks</p>
+<pre class="r"><code>cut_df  %&gt;%
+  rowwise() %&gt;%
+  head(10000) %&gt;%
+  crossing(mk = 0:12) %&gt;%
+  filter(cut &gt;= mk/12) %&gt;%
+  group_by(r_id, mk) %&gt;%  
+  slice(1) %&gt;%
+  ungroup() %&gt;%
+  group_by(mk) %&gt;%
+  ggplot(aes(x = length * 12, y = mk, group = mk, fill = stat(x))) + 
+  geom_density_ridges_gradient(from = 0, to = 12) +
+  scale_fill_viridis_c(name = &quot;&quot;, option = &quot;C&quot;) +
+  labs(title = &quot;Lengths of ruler segments that contain the various inch marks&quot;,
+       subtitle = &quot;Only showing first 10000&quot;,
+       x = &quot;Length (inches)&quot;,
+       y = &quot;Inch Mark&quot;) +
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0,12)) +
+  scale_x_continuous(expand = c(0, 0))+
+  theme(text = element_text(colour = &#39;white&#39;),
+        axis.text = element_text(colour = &#39;white&#39;),
+        panel.background = element_rect(fill = &quot;transparent&quot;,colour = NA))</code></pre>
+<pre><code>## Picking joint bandwidth of 0.428</code></pre>
+<p><img src="/post/riddler_rulers/riddler_rulers_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
