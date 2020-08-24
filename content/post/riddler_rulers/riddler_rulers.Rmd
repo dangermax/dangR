@@ -47,8 +47,7 @@ Display the lengths of all segments (4 per ruler)
 ```{r}
   cut_df %>%
     ggplot(aes(length * 12)) +
-    geom_histogram(
-        binwidth = 0.5, 
+    geom_histogram(binwidth = 0.5, 
         boundary = 1, 
         fill = 'darkgreen') +
     labs(title = "Lengths of all ruler segments",
@@ -56,7 +55,8 @@ Display the lengths of all segments (4 per ruler)
          y = "Count") +
   theme(text = element_text(colour = 'white'),
         axis.text = element_text(colour = 'white'),
-        panel.background = element_rect(fill = "transparent",colour = NA))
+        panel.background = element_rect(fill = "transparent",colour = NA),
+        plot.background = element_rect(fill = "transparent",colour = NA))
 
 
 ```
@@ -71,8 +71,7 @@ Display the lengths of the pieces of ruler that have the six inch mark
     group_by(r_id) %>%  
     slice(1) %>%
     ggplot(aes(x = length * 12)) +
-    geom_histogram(
-      binwidth = 0.5, 
+    geom_histogram(binwidth = 0.5, 
       boundary = 1, 
       fill = 'darkgreen') +
     labs(title = "Lengths of ruler segments that contain the 6 inch mark",
@@ -80,7 +79,8 @@ Display the lengths of the pieces of ruler that have the six inch mark
          y = "Count") +
   theme(text = element_text(colour = 'white'),
         axis.text = element_text(colour = 'white'),
-        panel.background = element_rect(fill = "transparent",colour = NA))
+        panel.background = element_rect(fill = "transparent",colour = NA),
+        plot.background = element_rect(fill = "transparent",colour = NA))
 
 
 ```
@@ -110,7 +110,8 @@ cut_df  %>%
   scale_x_continuous(expand = c(0, 0))+
   theme(text = element_text(colour = 'white'),
         axis.text = element_text(colour = 'white'),
-        panel.background = element_rect(fill = "transparent",colour = NA))
+        panel.background = element_rect(fill = "transparent",colour = NA),
+        plot.background = element_rect(fill = "transparent",colour = NA))
 
 
   
